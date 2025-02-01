@@ -1,0 +1,121 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ff758c, #ff7eb3);
+  }
+  
+  /* Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;y
+    : center;
+    padding: 15px 50px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4081;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #ff4081;
+  }
+  
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 80px 20px;
+    color: white;
+  }
+  
+  .hero h1 {
+    font-size: 50px;
+    font-weight: bold;
+  }
+  
+  .hero p {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  
+  .shop-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: white;
+    color: #ff4081;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .shop-btn a {
+    text-decoration: none;
+    color: #ff4081;
+  }
+  
+  .shop-btn:hover {
+    background: #f0f0f0;
+  }
+  
+  /* Categories Section */
+  .categories {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 50px;
+  }
+  
+  .category-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  .category-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .category-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+  }
+  
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+  }
+  

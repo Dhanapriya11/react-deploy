@@ -1,0 +1,18 @@
+.visual-tryon-container {
+    text-align: center;
+}
+.tryon-area {
+    position: relative;
+    display: inline-block;
+}
+.user-image {
+    width: 300px;
+    background-color: rgb(208, 152, 197);
+}
+.dress-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.8;
+}

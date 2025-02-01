@@ -1,0 +1,67 @@
+/* Container for the entire traditional wear collection */
+.traditional-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  }
+  
+  /* Individual traditional wear item styling */
+  .traditional-item {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Hover effect for each item */
+  .traditional-item:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Image styling */
+  .traditional-image {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  /* Traditional item info (name, description, price, rating) */
+  .traditional-info {
+    padding: 15px;
+  }
+  
+  .traditional-info h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .traditional-info .price {
+    font-size: 1.1rem;
+    color: #e60000; /* Red color for price */
+    margin-bottom: 10px;
+  }
+  
+  .traditional-info .rating {
+    margin-bottom: 10px;
+  }
+  
+  /* Description text */
+  .traditional-info .description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  /* Offer text styling */
+  .traditional-info .offers {
+    font-size: 1rem;
+    color: #ff9800; /* Orange color for offers */
+    font-weight: bold;
+  }
+  

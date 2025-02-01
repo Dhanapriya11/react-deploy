@@ -1,0 +1,82 @@
+.casuals-container {
+      
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+
+    margin-top: 20px;
+}
+
+
+    .casual-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;  /* Ensures everything is centered */
+        justify-content: center;
+        background-color: white; /* Keeps the background consistent */
+        border: 1px solid #ecdede;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+
+.casual-image {
+    
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.casual-info {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff5722;
+}
+
+.rating {
+    color: #f39c12;
+}
+
+.description {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.offers {
+    font-size: 14px;
+    color: #28a745;
+    margin-top: 10px;
+}
+.search-filter {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-filter input, .search-filter button {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .search-filter button {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .search-filter button:hover {
+    background-color: #218838;
+  }
+  

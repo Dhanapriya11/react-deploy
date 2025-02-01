@@ -1,0 +1,174 @@
+.dress-details {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: #e8aada;
+    text-align: center;
+}
+
+.dress-image {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 22px;
+    color: #ff5733;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.rating {
+    font-size: 18px;
+    color: #ffaa00;
+    margin-bottom: 10px;
+}
+
+.offers {
+    font-size: 16px;
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Buttons Container */
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+/* Common Button Styles */
+.cart-button,
+.buy-button {
+    min-width: 150px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Add to Cart Button */
+.cart-button {
+    background: linear-gradient(45deg, #4a90e2, #357abd);
+    color: white;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.cart-button:hover {
+    background: linear-gradient(45deg, #357abd, #2868a5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+/* Buy Now Button */
+.buy-button {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    color: white;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.buy-button:hover {
+    background: linear-gradient(45deg, #27ae60, #219a52);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+}
+
+/* Button Ripple Effect */
+.cart-button::after,
+.buy-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.cart-button:focus:not(:active)::after,
+.buy-button:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(100, 100);
+        opacity: 0;
+    }
+}
+
+/* Comments Section */
+.comments {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.comments h3 {
+    font-size: 20px;
+    color: #333;
+}
+
+.comments p {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.comments input {
+    width: 80%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.comments button {
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.comments button:hover {
+    background: #0056b3;
+}
