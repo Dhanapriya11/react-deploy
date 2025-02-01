@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config();
 
 
 
@@ -11,8 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB (replace with your MongoDB URI)
-mongoose.connect('mongodb://127.0.0.1:27017/fashionStore')
+// Connect to MongoDB using environment variable
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
@@ -171,8 +172,9 @@ app.post('/comments/:id', async (req, res) => {
     res.status(500).send('Error adding comment');
   }
 });
-// Set the server to listen on a port
-const PORT = 4000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
 });
