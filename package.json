@@ -2,6 +2,9 @@
   "name": "virtual-try-on",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "@chakra-ui/react": "^3.5.1",
     "@emotion/react": "^11.14.0",
@@ -18,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false npm install --legacy-peer-deps && react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
