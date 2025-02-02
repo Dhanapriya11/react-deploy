@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({
+  const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
@@ -11,31 +12,36 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials(prev => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!credentials.email || !credentials.password) {
-      setError('Please fill in all fields');
+    if (!formData.email || !formData.password) {
+      setError('All fields are required');
       return;
     }
 
-    // Check if user exists
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === credentials.email && u.password === credentials.password);
+    try {
+      const response = await axios.post('https://virtual-try-on-server.onrender.com/api/login', {
+        email: formData.email,
+        password: formData.password
+      });
 
-    if (user) {
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      navigate('/Home3');
-    } else {
-      setError('Invalid email or password');
+      if (response.data.success) {
+        localStorage.setItem('token', response.data.token);
+        navigate('/Home3');
+      } else {
+        setError(response.data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid email or password');
+      console.error('Login error:', err);
     }
   };
 
@@ -51,7 +57,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="Email"
-              value={credentials.email}
+              value={formData.email}
               onChange={handleChange}
               style={styles.input}
             />
@@ -61,7 +67,7 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Password"
-              value={credentials.password}
+              value={formData.password}
               onChange={handleChange}
               style={styles.input}
             />

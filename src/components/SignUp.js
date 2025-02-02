@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -33,23 +34,22 @@ const SignUp = () => {
       return;
     }
 
-    // In a real app, you'd send this to a backend
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userExists = users.some(user => user.email === formData.email);
-    
-    if (userExists) {
-      setError('Email already registered');
-      return;
+    try {
+      const response = await axios.post('https://virtual-try-on-server.onrender.com/api/signup', {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.data.success) {
+        navigate('/login');
+      } else {
+        setError(response.data.message || 'Registration failed');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error during registration');
+      console.error('Registration error:', err);
     }
-
-    users.push({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password // In a real app, this should be hashed
-    });
-
-    localStorage.setItem('users', JSON.stringify(users));
-    navigate('/');
   };
 
   return (
