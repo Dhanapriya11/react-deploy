@@ -22,11 +22,6 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  connectTimeoutMS: 10000,
-  tls: true,
-  tlsAllowInvalidCertificates: true,
   retryWrites: true,
   w: 'majority'
 })
