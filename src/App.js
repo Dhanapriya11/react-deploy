@@ -17,6 +17,66 @@ import Checkout from './components/Checkout';
 import OrderConfirmation from './components/OrderConfirmation';
 import Home from './components/Home';
 
+const styles = {
+  container: {
+    backgroundImage: "url('https://cdn.shopify.com/s/files/1/0070/7032/articles/how_20to_20start_20a_20clothing_20brand_26e960f5-9ca7-445b-99fb-ac30dd860dd5.png')", // Replace with your image URL
+    backgroundSize: "cover",  // Ensures the image covers the entire screen
+    backgroundPosition: "center",  // Centers the image
+    minHeight: "100vh",  // Ensures the background cove
+    textAlign: "center",
+    padding: "20px",
+  },
+  title: {
+    fontSize: "2.5rem",
+    color: "#222",
+    marginBottom: "1rem",
+  },
+  subtitle: {
+    fontSize: "1.4rem",
+    color: "#333",
+    marginBottom: "2rem",
+  },
+  linksContainer: {
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    gap: "20px",
+  },
+  link: {
+    padding: "20px 40px",
+    textDecoration: "none",
+    color: "#333",
+    borderRadius: "10px",
+    fontSize: "1.1rem",
+    transition: "transform 0.3s ease",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+    "&:hover": {
+      transform: "translateY(-5px)",
+    },
+  },
+};
+
+const Home3 = () => (
+  <div style={styles.container}>
+    <h1 style={styles.title}>Find Your Perfect Style</h1>
+    <p style={styles.subtitle}><strong>Trendy & Elegant Dresses for Every Occasion</strong></p>
+    <div style={styles.linksContainer}>
+      <Link to="/Casual" style={{ ...styles.link, backgroundColor: "#ffcccc" }}>
+        Casual Wear
+      </Link>
+      <Link to="/PartyWear" style={{ ...styles.link, backgroundColor: "#ffe6cc" }}>
+        Party Wear
+      </Link>
+      <Link to="/FormalWear" style={{ ...styles.link, backgroundColor: "#f5ccff" }}>
+        Formal Wear
+      </Link>
+      <Link to="/TraditionalWear" style={{ ...styles.link, backgroundColor: "#ccf5e1" }}>
+        Traditional Wear
+      </Link>
+    </div>
+  </div>
+);
+
 function App() {
   return (
     <CartProvider>
@@ -28,10 +88,10 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/reset-password" element={<PasswordReset />} />
             <Route
-              path="/home"
+              path="/Home3"
               element={
                 <PrivateRoute>
-                  <Home />
+                  <Home3 />
                 </PrivateRoute>
               }
             />
@@ -68,15 +128,7 @@ function App() {
               }
             />
             <Route
-              path="/try-on/:id"
-              element={
-                <PrivateRoute>
-                  <VisualTryOn />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/cart"
+              path="/Cart"
               element={
                 <PrivateRoute>
                   <Cart />
@@ -84,7 +136,7 @@ function App() {
               }
             />
             <Route
-              path="/checkout"
+              path="/Checkout"
               element={
                 <PrivateRoute>
                   <Checkout />
@@ -104,6 +156,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <DressDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/try-on/:id"
+              element={
+                <PrivateRoute>
+                  <VisualTryOn />
                 </PrivateRoute>
               }
             />
