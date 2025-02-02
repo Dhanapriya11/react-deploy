@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-
-const BACKEND_URL = 'https://virtual-try-on-servers.onrender.com';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +19,7 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
@@ -36,22 +33,23 @@ const SignUp = () => {
       return;
     }
 
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/signup`, {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
-      });
-
-      if (response.data.success) {
-        navigate('/login');
-      } else {
-        setError(response.data.message || 'Registration failed');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Error during registration');
-      console.error('Registration error:', err);
+    // In a real app, you'd send this to a backend
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userExists = users.some(user => user.email === formData.email);
+    
+    if (userExists) {
+      setError('Email already registered');
+      return;
     }
+
+    users.push({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password // In a real app, this should be hashed
+    });
+
+    localStorage.setItem('users', JSON.stringify(users));
+    navigate('/');
   };
 
   return (
@@ -100,12 +98,10 @@ const SignUp = () => {
               style={styles.input}
             />
           </div>
-          <button type="submit" style={styles.button}>
-            Sign Up
-          </button>
+          <button type="submit" style={styles.button}>Sign Up</button>
         </form>
-        <p style={styles.link}>
-          Already have an account? <Link to="/login">Login here</Link>
+        <p style={styles.links}>
+          Already have an account? <Link to="/" style={styles.link}>Login</Link>
         </p>
       </div>
     </div>
@@ -114,62 +110,67 @@ const SignUp = () => {
 
 const styles = {
   container: {
-    backgroundImage: "url('https://img.freepik.com/free-vector/pink-gradient-abstract-background-design_343694-3765.jpg')", // Replace with your image URL
-    backgroundSize: "cover",  // Ensures the image covers the entire screen
-    backgroundPosition: "center", 
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5',
+    backgroundImage: "url('https://img.freepik.com/free-vector/pink-gradient-abstract-background-design_343694-3765.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
   },
   formBox: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '10px',
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-    width: '100%',
-    maxWidth: '400px',
+    background: "rgba(255, 255, 255, 0.9)",
+    padding: "30px",
+    borderRadius: "10px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    width: "100%",
+    maxWidth: "400px",
   },
   title: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-    color: '#333',
+    textAlign: "center",
+    color: "#333",
+    marginBottom: "20px",
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
   },
   inputGroup: {
-    marginBottom: '1rem',
+    marginBottom: "15px",
   },
   input: {
-    width: '100%',
-    padding: '0.75rem',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
+    width: "100%",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "5px",
+    fontSize: "16px",
   },
   button: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    padding: '0.75rem',
-    border: 'none',
-    borderRadius: '5px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
+    width: "100%",
+    padding: "10px",
+    background: "#4CAF50",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '1rem',
+    color: "red",
+    textAlign: "center",
+    marginBottom: "10px",
+  },
+  links: {
+    textAlign: "center",
+    marginTop: "15px",
+    color: "#666",
   },
   link: {
-    textAlign: 'center',
-    marginTop: '1rem',
-  }
+    color: "#4CAF50",
+    textDecoration: "none",
+  },
 };
 
 export default SignUp;

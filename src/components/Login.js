@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-
-const BACKEND_URL = 'https://virtual-try-on-servers.onrender.com';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
+  const [credentials, setCredentials] = useState({
     email: '',
     password: ''
   });
@@ -14,43 +11,37 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setCredentials(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.email || !formData.password) {
-      setError('All fields are required');
+    if (!credentials.email || !credentials.password) {
+      setError('Please fill in all fields');
       return;
     }
 
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/login`, {
-        email: formData.email,
-        password: formData.password
-      });
+    // Check if user exists
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.email === credentials.email && u.password === credentials.password);
 
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/Home3');
-      } else {
-        setError(response.data.message || 'Login failed');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password');
-      console.error('Login error:', err);
+    if (user) {
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      navigate('/Home3');
+    } else {
+      setError('Invalid email or password');
     }
   };
 
   return (
-    
-    <div style={styles.container }>
-      <div style={styles.loginBox}>
+    <div style={styles.container}>
+      <div style={styles.formBox}>
         <h2 style={styles.title}>Login</h2>
         {error && <p style={styles.error}>{error}</p>}
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -59,7 +50,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="Email"
-              value={formData.email}
+              value={credentials.email}
               onChange={handleChange}
               style={styles.input}
             />
@@ -69,88 +60,87 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Password"
-              value={formData.password}
+              value={credentials.password}
               onChange={handleChange}
               style={styles.input}
             />
           </div>
-          <button type="submit" style={styles.button}>
-            Login
-          </button>
+          <button type="submit" style={styles.button}>Login</button>
         </form>
-        <div style={styles.links}>
-          <Link to="/signup" style={styles.link}>Create an account</Link>
-          <Link to="/reset-password" style={styles.link}>Forgot password?</Link>
-        </div>
+        <p style={styles.links}>
+          Don't have an account? <Link to="/signup" style={styles.link}>Sign Up</Link>
+        </p>
+        <p style={styles.links}>
+          <Link to="/reset-password" style={styles.link}>Forgot Password?</Link>
+        </p>
       </div>
     </div>
-    
   );
 };
 
 const styles = {
   container: {
-    backgroundImage: "url('https://img.freepik.com/free-vector/pink-gradient-abstract-background-design_343694-3765.jpg')", // Replace with your image URL
-    backgroundSize: "cover",  // Ensures the image covers the entire screen
-    backgroundPosition: "center",  // Centers the image
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5',
+    backgroundImage: "url('https://img.freepik.com/free-vector/pink-gradient-abstract-background-design_343694-3765.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
   },
-  loginBox: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '10px',
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-    width: '100%',
-    maxWidth: '400px',
+  formBox: {
+    background: "rgba(255, 255, 255, 0.9)",
+    padding: "30px",
+    borderRadius: "10px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    width: "100%",
+    maxWidth: "400px",
   },
   title: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-    color: '#333',
+    textAlign: "center",
+    color: "#333",
+    marginBottom: "20px",
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
   },
   inputGroup: {
-    marginBottom: '1rem',
+    marginBottom: "15px",
   },
   input: {
-    width: '100%',
-    padding: '0.75rem',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
+    width: "100%",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "5px",
+    fontSize: "16px",
   },
   button: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    padding: '0.75rem',
-    border: 'none',
-    borderRadius: '5px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
+    width: "100%",
+    padding: "10px",
+    background: "#4CAF50",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '1rem',
+    color: "red",
+    textAlign: "center",
+    marginBottom: "10px",
   },
   links: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '1rem',
+    textAlign: "center",
+    marginTop: "15px",
+    color: "#666",
   },
   link: {
-    color: '#007bff',
-    textDecoration: 'none',
-  }
+    color: "#4CAF50",
+    textDecoration: "none",
+  },
 };
 
 export default Login;
