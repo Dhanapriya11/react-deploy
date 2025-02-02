@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+const BACKEND_URL = 'https://virtual-try-on-servers.onrender.com';
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -35,7 +37,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('https://virtual-try-on-server.onrender.com/api/signup', {
+      const response = await axios.post(`${BACKEND_URL}/api/signup`, {
         name: formData.name,
         email: formData.email,
         password: formData.password
