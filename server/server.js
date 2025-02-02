@@ -25,6 +25,10 @@ mongoose.connect(process.env.MONGODB_URI, {
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
   connectTimeoutMS: 10000,
+  ssl: true,
+  sslValidate: false,
+  tlsAllowInvalidCertificates: true,
+  tlsAllowInvalidHostnames: true,
   retryWrites: true,
   w: 'majority'
 })
