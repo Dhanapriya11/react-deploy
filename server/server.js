@@ -3,21 +3,30 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-
-
 // Create an express app
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'https://virtual-try-on.vercel.app',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB using environment variable
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
-
-
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  retryWrites: true,
+  w: 'majority'
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log(err));
 
 // Define a casual wear schema
 const casualSchema = new mongoose.Schema({

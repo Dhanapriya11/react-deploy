@@ -6,6 +6,8 @@ import { Camera } from '@mediapipe/camera_utils';
 
 // import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 
+axios.defaults.withCredentials = true;
+
 const VisualTryOn = () => {
   const { id } = useParams();
   const navigate = useNavigate();

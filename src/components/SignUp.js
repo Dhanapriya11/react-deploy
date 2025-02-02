@@ -49,7 +49,7 @@ const SignUp = () => {
     });
 
     localStorage.setItem('users', JSON.stringify(users));
-    navigate('/login');
+    navigate('/');
   };
 
   return (
