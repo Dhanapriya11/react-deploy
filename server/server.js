@@ -44,162 +44,108 @@ mongoose.connection.on('connected', () => {
   console.log('MongoDB connected successfully');
 });
 
-// Define a casual wear schema
-const casualSchema = new mongoose.Schema({
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Define schemas
+const dressSchema = new mongoose.Schema({
   name: String,
   price: Number,
   image: String,
   description: String,
   rating: Number,
-  offers: String
+  offers: String,
+  category: String
 });
 
-// Create a model for casual wear
-const Casual = mongoose.model('Casual', casualSchema);
+// Create models
+const Casual = mongoose.model('Casual', dressSchema, 'casuals');
+const PartyWear = mongoose.model('PartyWear', dressSchema, 'partywears');
+const FormalWear = mongoose.model('FormalWear', dressSchema, 'formalwears');
 
-// Get all casual wear items
-app.get('/casuals', async (req, res) => {
+// API endpoints
+app.get('/api/casuals', async (req, res) => {
   try {
     const casuals = await Casual.find();
     res.json(casuals);
   } catch (err) {
-    res.status(500).send('Error fetching data');
+    console.error('Error fetching casuals:', err);
+    res.status(500).json({ error: 'Error fetching casual wear data' });
   }
 });
 
-const partyWearSchema = new mongoose.Schema({
-    name: String,
-    price: Number,
-    image: String,
-    description: String,
-    rating: Number,
-    offers: String
-  });
-
-  const PartyWear = mongoose.model('PartyWear', partyWearSchema);
-
-  app.get('/partywears', async (req, res) => {
-    try {
-      const partywears = await PartyWear.find();
-      res.json(partywears);
-    } catch (err) {
-      res.status(500).send('Error fetching data for Party Wear');
-    }
-  });
-
-  const formalWearSchema = new mongoose.Schema({
-    name: String,
-    price: Number,
-    image: String,
-    description: String,
-    rating: Number,
-    offers: String
-});
-
-// Create a model for formal wear
-const FormalWear = mongoose.model('FormalWear', formalWearSchema, 'formalwears');
-
-// Get all formal wear items
-app.get('/formalwears', async (req, res) => {
-    try {
-        const formals = await FormalWear.find();
-        res.json(formals);
-    } catch (err) {
-        res.status(500).send('Error fetching data for Formal Wear');
-    }
-});
-
-const traditionalWearSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
-  image: String,
-  description: String,
-  rating: Number,
-  offers: String
-});
-
-const TraditionalWear = mongoose.model('TraditionalWear', traditionalWearSchema);
-
-app.get('/traditionalwears', async (req, res) => {
+app.get('/api/partywears', async (req, res) => {
   try {
-    const traditionalWears = await TraditionalWear.find();
-    res.json(traditionalWears);
+    const partywears = await PartyWear.find();
+    res.json(partywears);
   } catch (err) {
-    res.status(500).send('Error fetching traditional wear');
+    console.error('Error fetching partywears:', err);
+    res.status(500).json({ error: 'Error fetching party wear data' });
   }
 });
 
-
-// Define a dress schema (without comments)
-const dressSchema = new mongoose.Schema({
-  _id:{  type:String ,required: true},
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  image: { type: String, required: true },
-  description: { type: String, required: true },
-  rating: { type: Number, required: true },
-  offers: { type: String, default: "" },
-  category: { type: String, required: true }
-});
-
-const Dress = mongoose.model('Dress', dressSchema);
-
-// Define the comment schema
-const commentSchema = new mongoose.Schema({
-  dressId: { type: mongoose.Schema.Types.ObjectId, ref: 'Dress' }, 
-  text: { type: String, required: true },
-  rating: { type: Number, min: 1, max: 5, required: true },
-  user: { type: String, default: "Anonymous" }, // Set default value
-  date: { type: Date, default: Date.now }
-});
-
-const Comment = mongoose.model('Comment', commentSchema);
-
-// Fetch a single dress
-app.get('/dresses/:id', async (req, res) => {
+app.get('/api/formalwears', async (req, res) => {
   try {
-    const dress = await Dress.findById(req.params.id);  // Fetch by ID
+    const formalwears = await FormalWear.find();
+    res.json(formalwears);
+  } catch (err) {
+    console.error('Error fetching formalwears:', err);
+    res.status(500).json({ error: 'Error fetching formal wear data' });
+  }
+});
+
+// Get dress by ID (for any category)
+app.get('/api/dresses/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    let dress = await Casual.findById(id);
     if (!dress) {
-      return res.status(404).send('Dress not found');  // Return 404 if not found
+      dress = await PartyWear.findById(id);
     }
-    res.json(dress);  // Return the dress details
+    if (!dress) {
+      dress = await FormalWear.findById(id);
+    }
+    if (!dress) {
+      return res.status(404).json({ error: 'Dress not found' });
+    }
+    res.json(dress);
   } catch (err) {
-    console.error("Error fetching dress:", err);
-    res.status(500).send('Error fetching dress details');
+    console.error('Error fetching dress:', err);
+    res.status(500).json({ error: 'Error fetching dress data' });
   }
 });
 
-
-// Fetch comments for a specific dress
-app.get('/comments/:id', async (req, res) => {
+// Add a new dress
+app.post('/api/dresses', async (req, res) => {
   try {
-    const comments = await Comment.find({ dressId: req.params.id });
-    res.json(comments);
+    const { category, ...dressData } = req.body;
+    let dress;
+    
+    switch (category.toLowerCase()) {
+      case 'casual':
+        dress = new Casual(dressData);
+        break;
+      case 'party':
+        dress = new PartyWear(dressData);
+        break;
+      case 'formal':
+        dress = new FormalWear(dressData);
+        break;
+      default:
+        return res.status(400).json({ error: 'Invalid category' });
+    }
+    
+    await dress.save();
+    res.status(201).json(dress);
   } catch (err) {
-    res.status(500).send('Error fetching comments');
+    console.error('Error adding dress:', err);
+    res.status(500).json({ error: 'Error adding dress' });
   }
 });
 
-// Add a new comment to a dress
-app.post('/comments/:id', async (req, res) => {
-  try {
-    const { user, text, rating } = req.body;
-    const newComment = new Comment({
-      dressId: req.params.id,
-      user,
-      text,
-      rating
-    });
-
-    await newComment.save();
-    res.status(201).send('Comment added successfully');
-  } catch (err) {
-    res.status(500).send('Error adding comment');
-  }
-});
-
-// Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT}`);
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
